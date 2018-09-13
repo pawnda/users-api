@@ -1,24 +1,13 @@
-# README
+# Frogogo-API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails API for a simple user administration system.
 
-Things you may want to cover:
+# Features
+  - Authentication with JWT tokens
+  - Perform CRUD operations on Users
 
-* Ruby version
+# Technologies
+  - Ruby on Rails
+  - PostgreSQL
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Installation
