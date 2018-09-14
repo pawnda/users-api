@@ -83,5 +83,7 @@ test:
 production:
   <<: *default
   database: frogogo-api_production
-  username: frogogo-api
+  username: postgres
   password: <%= ENV['FROGOGO-API_DATABASE_PASSWORD'] %>
+  host: <%= ENV['FROGOGO-API_DATABASE_HOST'] %>
+  port: <%= ENV['FROGOGO-API_DATABASE_PORT'] %>
