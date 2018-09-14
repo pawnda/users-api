@@ -3,7 +3,15 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.5.1
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: frogogo-api_test
+          RAILS_ENV: test
       - image: circleci/postgres:9.5.14
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: frogogo-api_test
+          POSTGRES_PASSWORD: password
 
     working_directory: ~/frogogo-api-circleci
 
@@ -28,6 +36,10 @@ jobs:
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
       # Database setup
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
 
@@ -36,13 +48,10 @@ jobs:
           name: run tests
           command: |
             mkdir /tmp/test-results
-            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
 
             bundle exec rspec --format progress \
-                            --format RspecJunitFormatter \
                             --out /tmp/test-results/rspec.xml \
                             --format progress \
-                            $TEST_FILES
 
       # collect reports
       - store_test_results:
@@ -51,29 +60,8 @@ jobs:
           path: /tmp/test-results
           destination: test-results
 
-  deploy-production:
-    working_directory: ~/frogogo-api-circleci
-    docker:
-      - image: circleci/ruby:2.5.1
-
-    steps:
-      - run:
-          name: Bundle Install
-          command: bundle check || bundle install
-
-      - run:
-          name: Deploy to AWS in production
+      - deploy:
           command: |
-            eval `ssh-agent` && ssh-add ~/.ssh/id_rsa* && bundle exec cap production deploy
-
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - build
-      - deploy-production:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              then bundle exec cap production deploy
+            fi
