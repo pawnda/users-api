@@ -1,4 +1,4 @@
-# Frogogo-API
+# Users-API
 
 Rails API for a simple user administration system.
 
