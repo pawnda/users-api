@@ -24,7 +24,6 @@ Deploy to AWS on push/merge to master if tests pass, keywords:
 # Endpoints
 
 All endpoints are protected and require authentication with JSON Web Tokens (JWT)
-The following endpoint can be accessed using `http://ec2-18-216-160-159.us-east-2.compute.amazonaws.com` host
 
 ## Authentication
 
@@ -42,7 +41,7 @@ POST /signin
 
 #### Request body example
 
-    http://ec2-18-216-160-159.us-east-2.compute.amazonaws.com/signin
+    /signin
 
     json
     {
@@ -154,7 +153,7 @@ POST /api/v1/users
 
 #### Request body example
 
-    ec2-18-216-160-159.us-east-2.compute.amazonaws.com/api/v1/users
+    /api/v1/users
 
     json
     {
@@ -204,7 +203,7 @@ PATCH /api/v1/users/:user_id
 
 #### Request body example
 
-    ec2-18-216-160-159.us-east-2.compute.amazonaws.com/api/v1/users/4
+    /api/v1/users/4
 
     json
     {
